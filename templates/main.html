@@ -1,16 +1,36 @@
 <html>
   <head>
     <title>South Lake AWOS</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Open%20Sans:300,400,700,300italic' rel='stylesheet' type='text/css'>
+
+    <style>
+      body { font-family: 'Open Sans', sans-serif; font-weight: 300; }
+      main { display: flex; flex-wrap: wrap; }
+      div { margin: 2em; }
+      h1 {  text-align: center; margin-top: 0; }
+      table { font-weight: 300; }
+      th { text-align: right; }
+      td { text-align: left; padding: .25em .5em; }
+    </style>
+    
   </head>
   <body>
-  	  <h1>South Lake AWOS</h1>
-      <h2>Last Updated: {{ last_update }}</h2>
-      <h2>Wind Speed: {{ wind_speed }} mph</h2>
-      <h2>Wind Direction: {{ wind_direction }}</h2>
-      <h2>Temperature: {{ out_temp }} degrees F</h2>
-      <h2>Temperature Inside: {{ in_temp }} degrees F</h2>
-      <h2>Humidity: {{ humidity }}</h2>
-      <h2>Pressure: {{ pressure }}</h2>
-      <img src="static/weather.jpg">
+    <main>
+      <div>
+        <h1>South Lake AWOS</h1>
+        <table>
+          <tr><th>Last Updated: </th><td>{{ last_update }}</td></tr>
+          <tr><th>Wind Speed: </th><td>{{ wind_speed }} mph</td></tr>
+          <tr><th>Wind Direction: </th><td>{{ wind_direction }}</td></tr>
+          <tr><th>Temperature: </th><td>{{ out_temp }} &deg;F</td></tr>
+          <tr><th>Temperature Inside: </th><td>{{ in_temp }} &deg;F</td></tr>
+          <tr><th>Humidity: </th><td>{{ humidity }}</td></tr>
+          <tr><th>Pressure: </th><td>{{ pressure }}</td></tr>
+        </table>
+      </div>
+
+      <img width="640" height="480" src="static/weather.jpg">
+    </main>
   </body>
 </html>
