@@ -2,6 +2,9 @@ import os
 from flask import Flask, request, render_template
 from werkzeug import secure_filename
 import datetime
+import logging
+
+LOGGER = logging.getLogger(__name__)
 
 UPLOAD_FOLDER = 'static'
 ALLOWED_EXTENSIONS = set(['jpg'])
@@ -12,7 +15,7 @@ class MyServer(Flask):
         super(MyServer, self).__init__(*args, **kwargs)
         # Weather Data
         self.last_updated = "---"
-        self.wind_spead = '-'
+        self.wind_speed = '-'
         self.wind_direction = '-'
         self.outside_temp = '-'
         self.inside_temp = '-'
@@ -40,21 +43,31 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             app.last_updated = get_time_string()
-            return "yay!"
-    return ":("
+            return "successfully updated images"
+    return "failed to update images"
 
 
 @app.route('/weatherdata', methods=['POST'])
 def upload_weather():
-    last_updated = get_time_string()
-    return "done"
+    try:
+        app.last_updated = get_time_string()
+        data = request.form
+        app.wind_speed = data['average_wind_speed']
+        app.wind_direction = data['wind_direction']
+        app.outside_temp = data['outside_temp']
+        app.inside_temp = data['inside_temp']
+        app.humidity = data['humidity']
+        app.pressure = data['pressure']
+        return "successfully updated weather data"
+    except:
+        return "failed to update weather data"
 
 
 @app.route('/', methods=['GET'])
 def return_main():
     return render_template("main.html",
                            last_update=app.last_updated,
-                           wind_spead=app.wind_spead,
+                           wind_speed=app.wind_speed,
                            wind_direction=app.wind_direction,
                            out_temp=app.outside_temp,
                            in_temp=app.inside_temp,
@@ -64,4 +77,4 @@ def return_main():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5050)
